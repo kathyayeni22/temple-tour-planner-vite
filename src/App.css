@@ -1,0 +1,28 @@
+/* App.css */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff; /* light mode default */
+  color: #000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dark mode support */
+body.dark .app-container {
+  background-color: #121212;
+  color: #ffffff;
+}
