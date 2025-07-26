@@ -4,7 +4,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 
 // Page Components
 import LoginForm from "./pages/LoginForm";
-import Dashboard from "./pages/DashBoard";
+import DashBoard from "./pages/DashBoard";
 import TopTemples from "./pages/TopTemples";
 import PlanTour from "./pages/PlanTour";
 import Bookings from "./pages/Bookings";
@@ -41,7 +41,7 @@ function App() {
             path="/dashboard"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <DashBoard />
               </PrivateRoute>
             }
           />
