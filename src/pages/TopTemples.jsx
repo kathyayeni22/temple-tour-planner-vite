@@ -11,18 +11,6 @@ function TopTemples() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [radius, setRadius] = useState(20); // km
-const handleAddToPlan = (temple) => {
-  const currentPlan = JSON.parse(localStorage.getItem("plannedTemples")) || [];
-  const alreadyAdded = currentPlan.some((t) => t.name === temple.name);
-
-  if (!alreadyAdded) {
-    currentPlan.push(temple);
-    localStorage.setItem("plannedTemples", JSON.stringify(currentPlan));
-    alert(`${temple.name} added to your tour plan.`);
-  } else {
-    alert(`${temple.name} is already in your plan.`);
-  }
-};
 
   const getDistance = (lat1, lon1, lat2, lon2) => {
     const toRad = (value) => (value * Math.PI) / 180;
@@ -37,25 +25,25 @@ const handleAddToPlan = (temple) => {
     return R * c;
   };
 
-  const handleAddTemple = (temple) => {
-    const plan = JSON.parse(localStorage.getItem("plannedTemples")) || [];
-    const exists = plan.some((t) => t.name === temple.name);
-    if (!exists) {
-      localStorage.setItem("plannedTemples", JSON.stringify([...plan, temple]));
-      alert(`${temple.name} added to your tour plan!`);
-    } else {
-      alert(`${temple.name} is already in your plan.`);
-    }
-  };
-
   const filteredTemples = templeData.filter((temple) => {
     const query = searchQuery.toLowerCase();
-    return (
+
+    const matchSearch =
       temple.name.toLowerCase().includes(query) ||
       temple.location.toLowerCase().includes(query) ||
       (temple.category &&
-        temple.category.some((cat) => cat.toLowerCase().includes(query)))
-    );
+        temple.category.some((cat) => cat.toLowerCase().includes(query)));
+
+    const matchFilter =
+      filterType === "all" ||
+      (filterType === "jyotirlinga" &&
+        temple.category.includes("Jyotirlingas")) ||
+      (filterType === "shakti-peetha" &&
+        temple.category.includes("Shakti Peethas")) ||
+      (filterType === "state" &&
+        !["Jyotirlingas", "Shakti Peethas"].includes(temple.category[0]));
+
+    return matchSearch && matchFilter;
   });
 
   return (
@@ -115,20 +103,16 @@ const handleAddToPlan = (temple) => {
                 src={temple.image}
                 alt={temple.name}
                 className="temple-image"
+                onError={(e) => {
+                  e.target.src = "/temples/fallback.jpg"; // Optional fallback
+                }}
               />
               <h3>{temple.name}</h3>
               <p>{temple.location}</p>
 
-
-
-// Inside your main temple card (below image or beside name)
-<button
-  onClick={() => addToPlan(temple)}
-  className="add-btn"
->
-  ➕ Add
-</button>
-
+              <button onClick={() => addToPlan(temple)} className="add-btn">
+                ➕ Add
+              </button>
 
               {/* 🌟 Show filtered nearby sub-temples */}
               {nearbySubTemples.length > 0 && (
@@ -144,7 +128,10 @@ const handleAddToPlan = (temple) => {
                 </div>
               )}
 
-              <Link to={`/temples/${slugify(temple.name)}`} className="view-link">
+              <Link
+                to={`/temples/${slugify(temple.name)}`}
+                className="view-link"
+              >
                 View Details
               </Link>
             </div>
