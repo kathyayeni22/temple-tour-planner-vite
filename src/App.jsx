@@ -4,7 +4,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 
 // Page Components
 import LoginForm from "./pages/LoginForm";
-import Dashboard from "./pages/Dashboard";   // ✅ Fixed casing
+import Dashboard from "./pages/DashBoard";  // ✅ Fixed casing
 import TopTemples from "./pages/TopTemples";
 import PlanTour from "./pages/PlanTour";
 import Bookings from "./pages/Bookings";
