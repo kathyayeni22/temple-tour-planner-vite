@@ -1,10 +1,10 @@
-// React and Router Imports
+// React and Router Imports 
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 // Page Components
 import LoginForm from "./pages/LoginForm";
-import DashBoard from "./pages/DashBoard";
+import Dashboard from "./pages/Dashboard";   // ✅ Fixed casing
 import TopTemples from "./pages/TopTemples";
 import PlanTour from "./pages/PlanTour";
 import Bookings from "./pages/Bookings";
@@ -41,7 +41,7 @@ function App() {
             path="/dashboard"
             element={
               <PrivateRoute>
-                <DashBoard />
+                <Dashboard /> {/* ✅ Updated */}
               </PrivateRoute>
             }
           />
